@@ -1,0 +1,133 @@
+<div class="container-fluid vh-100 d-flex flex-column p-0 overflow-hidden">
+  <nav
+    class="navbar navbar-dark px-4 py-3 position-absolute w-100"
+    style="z-index: 1001; background: linear-gradient(to bottom, rgba(15, 23, 42, 1), transparent)"
+  >
+    <span class="navbar-brand fw-black fs-4" style="letter-spacing: -1px">
+      <span class="text-info">NEO</span>EVENTS <small class="fs-6 opacity-50">v2.0</small>
+    </span>
+  </nav>
+
+  <div class="row g-0 h-100">
+    <div class="col-md-4 col-lg-3 sidebar-glass p-4 pt-5 mt-4 overflow-auto h-100">
+      <div class="px-3 mb-4">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input
+            #cityInput
+            type="text"
+            placeholder="¿A dónde?"
+            (keyup.enter)="onSearch(cityInput.value)"
+          />
+          <button
+            (click)="resetToUserLocation(cityInput)"
+            class="gps-button"
+            title="Volver a mi ubicación"
+          >
+            🎯
+          </button>
+        </div>
+        <div class="search-help">Pulsa Enter para viajar</div>
+      </div>
+
+      <h5 class="text-info mt-4 mb-4 small fw-bold text-uppercase">Explorando Vizcaya</h5>
+
+      <div class="d-flex gap-2 px-1 mb-3 mt-2 overflow-auto no-scrollbar">
+        <button
+          (click)="filterByDate('today')"
+          class="btn-filter"
+          [class.active]="currentFilter() === 'today'"
+        >
+          Hoy
+        </button>
+        <button
+          (click)="filterByDate('tomorrow')"
+          class="btn-filter"
+          [class.active]="currentFilter() === 'tomorrow'"
+        >
+          Mañana
+        </button>
+        <button
+          (click)="filterByDate('weekend')"
+          class="btn-filter"
+          [class.active]="currentFilter() === 'weekend'"
+        >
+          Finde
+        </button>
+        <button
+          (click)="filterByDate('all')"
+          class="btn-filter"
+          [class.active]="currentFilter() === 'all'"
+        >
+          Todos
+        </button>
+
+        <button
+          (click)="filterByDate('favs')"
+          class="btn-filter"
+          [class.active]="currentFilter() === 'favs'"
+        >
+          Mis ❤️
+        </button>
+      </div>
+
+      <div class="list-group list-group-flush">
+        @for (event of filteredEvents(); track event.id) {
+          <button
+            (click)="eventsService.selectEvent(event)"
+            class="list-group-item event-card mb-3"
+            [class.active]="eventsService.selectedEvent()?.id === event.id"
+          >
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span
+                class="badge rounded-pill text-dark px-3"
+                [style.backgroundColor]="getCategoryColor(event.category)"
+              >
+                {{ event.category }}
+              </span>
+
+              <div class="d-flex flex-column align-items-end" style="min-width: 60px">
+                <small class="opacity-75 mb-1" style="font-size: 0.7rem; white-space: nowrap">
+                  📡 50km
+                </small>
+
+                <button
+                  (click)="eventsService.toggleFavorite(event.id); $event.stopPropagation()"
+                  class="btn-fav"
+                >
+                  {{ eventsService.favorites().includes(event.id) ? '❤️' : '🤍' }}
+                </button>
+              </div>
+            </div>
+            <h6 class="fw-bold mb-1 text-white">{{ event.title }}</h6>
+            <div class="d-flex align-items-center gap-2 mt-2 opacity-75 small">
+              <span>📅 {{ event.date }}</span>
+              <span>•</span>
+              <span class="text-truncate">📍 {{ event.description }}</span>
+            </div>
+            <button
+              (click)="openNavigation(event); $event.stopPropagation()"
+              class="btn btn-sm btn-outline-info mt-3 w-100 rounded-pill"
+            >
+              🚗 ¿Cómo llegar?
+            </button>
+          </button>
+        } @empty {
+          <div class="text-center mt-5 opacity-50 px-3">
+            @if (currentFilter() === 'favs') {
+              <p>🌟 Aún no has guardado favoritos</p>
+              <small>Pulsa el ❤️ en los eventos que te gusten</small>
+            } @else {
+              <p>🌙 No hay eventos para esta fecha</p>
+              <small>Intenta buscar en otra ciudad o fecha</small>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="col-md-8 col-lg-9 h-100 position-relative">
+      <app-map-view></app-map-view>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'leaflet/dist/leaflet.css';
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  background-color: #0f172a; /* Color oscuro para que no haya destellos blancos */
+  overflow: hidden; /* Evita que aparezca una barra de scroll lateral innecesaria */
+}
+
+
+/* Si usas un contenedor principal de Bootstrap */
+.container-fluid {
+  padding: 0 !important;
+}

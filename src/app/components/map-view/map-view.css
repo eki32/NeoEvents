@@ -1,0 +1,24 @@
+.map-container {
+  /* Forzamos una altura mínima para que no colapse */
+height: 100%;
+  width: 100%;
+  /* Filtro para modo oscuro futurista */
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  background: #0f172a;
+}
+
+/* Ajuste necesario para Leaflet dentro de contenedores flexibles */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+
+/* Evita que los iconos de los marcadores también se inviertan de color */
+.leaflet-marker-icon {
+  filter: invert(100%) hue-rotate(180deg);
+}
+/* Corregimos las imágenes (marcadores) para que no se vean invertidas */
+.leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile {
+   /* Opcional: puedes dejar los tiles invertidos para el look oscuro */
+}

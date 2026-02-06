@@ -1,0 +1,284 @@
+body, html {
+  background-color: #0f172a;
+  color: #f8fafc;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden; /* Evita scrolls raros en el body */
+}
+
+.text-info{
+    text-align: center;
+}
+
+.search-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+/* 2. Buscador Neo (Versión Final sin cortes) */
+.search-box {
+  display: grid;
+  /* Mantenemos las proporciones: 30px icono | flexible | 40px botón */
+  grid-template-columns: 30px 1fr 40px; 
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0 10px; /* Reducido un poco para que el botón GPS respire mejor */
+  height: 48px;
+  margin-bottom: 5px;
+}
+
+.search-box:focus-within {
+  border-color: #38bdf8;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.search-box input {
+  width: 100%;
+  border: none !important;
+  background: transparent !important;
+  color: white !important;
+  font-size: 0.95rem;
+  padding: 0 8px !important; 
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.search-help {
+ color: #38bdf8;
+  font-size: 0.75rem;
+  margin-top: 8px;
+  padding-left: 40px; /* Alineado exactamente con donde empieza el texto del input */
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+
+.gps-button {
+  background: transparent;
+  border: none;
+  padding: 0; /* ¡ELIMINADO EL PADDING DE 110px! */
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.gps-button:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 8px #38bdf8);
+}
+
+/* 3. Panel de Eventos (Sidebar) */
+.sidebar-glass {
+ margin-top: 0 !important;
+ padding-top: 80px !important;
+ height: 100vh !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 15px 0 35px rgba(0,0,0,0.4);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.event-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 18px !important;
+  transition: all 0.3s ease;
+  color: white !important;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: #38bdf8 !important;
+  transform: translateX(5px); /* Deslizamiento sutil a la derecha */
+}
+
+.event-card.active {
+  background: rgba(56, 189, 248, 0.2) !important; /* Fondo azul traslúcido, no sólido */
+  border: 1px solid #38bdf8 !important; /* Borde neón brillante */
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+  transform: scale(1.02) translateX(5px);
+}
+
+.btn-outline-info {
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  color: #38bdf8;
+  transition: all 0.2s;
+}
+
+.event-card.active .btn-outline-info {
+  background-color: #38bdf8 !important;
+  color: #0f172a !important; /* Texto oscuro para máxima lectura */
+  border: none;
+  font-weight: bold;
+}
+
+/* 4. Mapa Estilo Radar Nocturno */
+.map-container {
+  height: 100% !important;
+  width: 100%;
+  background-color: #0f172a; /* Color base oscuro */
+  /* El filtro mágico: */
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.leaflet-container {
+  z-index: 1;
+  background: #0f172a !important;
+}
+
+/* Evitar que los popups del mapa se vean invertidos */
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  filter: invert(100%) hue-rotate(180deg);
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+}
+
+.btn-filter {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.btn-filter:hover {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+}
+
+.btn-filter.active {
+  background: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* Ocultar barra de scroll si los botones rebosan */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-center{
+  color: #f8fafc;
+  padding-right: 20px;
+}
+
+
+.btn-fav {
+background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0;
+  margin: 0; /* Aseguramos que no haya margen extra */
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.btn-fav:hover {
+  transform: scale(1.2);
+}
+
+.btn-fav:active {
+  transform: scale(0.9);
+}
+
+.event-card.is-favorite {
+  border-left: 4px solid #ec4899 !important; /* Un detalle rosa lateral si es favorito */
+}
+
+/* --- AJUSTES PARA TABLETS Y MÓVILES (Layout Responsivo) --- */
+
+/* --- AJUSTE ESPECIAL PARA TABLETS (iPad Mini, Air, etc.) --- */
+
+/* 1. Para tablets en posición vertical (Portrait) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .row.g-0.h-100 {
+    display: flex;
+    flex-direction: column; /* Apilamos para que no se vea estrecho */
+  }
+
+  .sidebar-glass {
+    width: 100% !important;
+    height: 45vh !important; /* La lista ocupa el 45% arriba */
+    position: relative !important;
+    padding-top: 80px !important;
+    border-right: none;
+    border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+  }
+
+  .col-md-8.col-lg-9 {
+    width: 100% !important;
+    height: 55vh !important; /* El mapa ocupa el resto abajo */
+  }
+
+  /* Hacemos que las tarjetas de eventos se vean en grid de 2 columnas en iPad */
+  .list-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding-bottom: 20px;
+  }
+}
+
+/* 2. Ajuste para Móviles (Smartphone) */
+@media (max-width: 767px) {
+  .row.g-0.h-100 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-glass {
+    width: 100% !important;
+    height: 50vh !important;
+    order: 2; /* Lista abajo */
+    padding-top: 20px !important;
+  }
+
+  .col-md-8.col-lg-9 {
+    width: 100% !important;
+    height: 50vh !important;
+    order: 1; /* Mapa arriba */
+  }
+  
+  /* En móvil normal, una sola columna de tarjetas */
+  .list-group {
+    display: block;
+  }
+}
+
+/* 3. Para iPad Pro o Laptops pequeñas (Horizontal) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .sidebar-glass {
+    width: 380px !important; /* Sidebar fija pero más estrecha */
+  }
+}
