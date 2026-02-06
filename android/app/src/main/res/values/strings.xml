@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">neoevents</string>
+    <string name="title_activity_main">neoevents</string>
+    <string name="package_name">com.neoevents.app</string>
+    <string name="custom_url_scheme">com.neoevents.app</string>
+</resources>

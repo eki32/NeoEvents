@@ -7,14 +7,14 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ MapViewComponent],
+  imports: [MapViewComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   // 2. Definimos el filtro como una señal para que 'filteredEvents' sea reactivo
-  currentFilter = signal<string>('all'); 
-  
+  currentFilter = signal<string>('all');
+
   public eventsService = inject(EventsService);
   public locationService = inject(LocationService);
 
@@ -29,9 +29,9 @@ export class App {
     if (filter === 'all') return allEvents;
 
     // NUEVO: Filtro de favoritos
-  if (filter === 'favs') {
-    return allEvents.filter(event => favs.includes(event.id));
-  }
+    if (filter === 'favs') {
+      return allEvents.filter((event) => favs.includes(event.id));
+    }
 
     return allEvents.filter((event) => {
       // Asegúrate de que event.date sea un formato de fecha válido
@@ -49,10 +49,10 @@ export class App {
       }
 
       if (filter === 'weekend') {
-        const dayOfWeek = today.getDay(); 
+        const dayOfWeek = today.getDay();
         const sunday = new Date(today);
         const saturday = new Date(today);
-        
+
         // Calculamos el próximo sábado y domingo
         saturday.setDate(today.getDate() + (6 - dayOfWeek));
         sunday.setDate(saturday.getDate() + 1);
@@ -65,12 +65,24 @@ export class App {
   });
 
   constructor() {
+    // EFECTO REACTIVO: Se activa cuando cambia la ubicación
     effect(() => {
       const coords = this.locationService.userLocation();
       if (coords) {
+        console.log('Ubicación detectada, cargando eventos...');
         this.eventsService.fetchRealEvents(coords[0], coords[1]);
       }
     });
+
+    // NUEVO: SEGURO POR DEFECTO PARA EL EMULADOR
+    // Si en 2.5 segundos no hay coordenadas, forzamos Madrid
+    setTimeout(() => {
+      if (!this.locationService.userLocation()) {
+        console.log('GPS inactivo en emulador. Cargando Madrid por defecto.');
+        const madrid: [number, number] = [40.4167, -3.7037];
+        this.locationService.userLocation.set(madrid);
+      }
+    }, 2500);
   }
 
   // 4. Actualizamos la señal del filtro
