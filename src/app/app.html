@@ -17,7 +17,7 @@
             #cityInput
             type="text"
             placeholder="¿A dónde?"
-            (keyup.enter)="onSearch(cityInput.value)"
+            (keydown.enter)="onSearch(cityInput.value)"
           />
           <button
             (click)="resetToUserLocation(cityInput)"
