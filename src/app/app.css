@@ -117,16 +117,29 @@ body, html {
 }
 
 .btn-outline-info {
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  color: #38bdf8;
-  transition: all 0.2s;
+  background-color: rgba(56, 189, 248, 0.1) !important; /* Un fondo muy sutil para que se vea el área del botón */
+  border: 1px solid #38bdf8 !important; /* Borde azul neón sólido */
+  color: #38bdf8 !important; /* Texto azul neón para que resalte */
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 8px 0 !important;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: block;
+  text-align: center;
+  text-decoration: none !important;
+}
+
+.btn-outline-info:hover {
+  background-color: #38bdf8 !important;
+  color: #0f172a !important; /* Texto oscuro al pasar el ratón */
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
 }
 
 .event-card.active .btn-outline-info {
   background-color: #38bdf8 !important;
-  color: #0f172a !important; /* Texto oscuro para máxima lectura */
-  border: none;
-  font-weight: bold;
+  color: #0f172a !important; /* Máximo contraste: texto oscuro sobre fondo azul */
+  border: none !important;
 }
 
 /* 4. Mapa Estilo Radar Nocturno */
