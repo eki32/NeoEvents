@@ -241,6 +241,8 @@ background: transparent;
     flex-direction: column; /* Apilamos para que no se vea estrecho */
   }
 
+ 
+
   .sidebar-glass {
     width: 100% !important;
     height: 45vh !important; /* La lista ocupa el 45% arriba */
@@ -270,6 +272,12 @@ background: transparent;
     display: flex;
     flex-direction: column;
   }
+
+  .search-help{
+    padding-left: 50px;
+  }
+
+  
 
   .sidebar-glass {
     width: 100% !important;
@@ -315,4 +323,20 @@ background: transparent;
   .sidebar-glass {
     width: 380px !important; /* Sidebar fija pero más estrecha */
   }
+
+  
+}
+
+@media screen and (max-width: 350px) {
+
+.search-help {
+    font-size: 12px;
+    display: flex;
+    flex-wrap: nowrap; /* Evita que las palabras se pongan una debajo de otra */
+    gap: 4px;
+    justify-content: center;
+  }
+
+
+
 }
