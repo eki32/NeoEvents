@@ -9,20 +9,14 @@ import { environment } from '../../enviroments/enviroment';
 export class EventsService {
   private http = inject(HttpClient);
 
-  // 1. Señales de estado
-  public events = signal<LocalEvent[]>([]); // Público para el HTML
+  public events = signal<LocalEvent[]>([]);
   public selectedEvent = signal<LocalEvent | undefined>(undefined);
-  public favorites = signal<string[]>([]); // Inicializamos vacía primero
-
-  private apiKey = environment.apiKey;
+  public favorites = signal<string[]>([]);
 
   constructor() {
-    // 2. Cargamos favoritos al iniciar el servicio
     this.favorites.set(this.loadFavorites());
   }
 
-  // 3. Lógica de Favoritos (Debe ser pública para el HTML)
-  // En service/events.ts
   public async toggleFavorite(eventId: string) {
     const current = this.favorites();
     const exists = current.includes(eventId);
@@ -32,7 +26,6 @@ export class EventsService {
     localStorage.setItem('neo_favs', JSON.stringify(updated));
 
     if (!exists) {
-      // Usamos el Service Worker para la notificación si está disponible
       const registration = await navigator.serviceWorker.getRegistration();
       const event = this.events().find((e) => e.id === eventId);
 
@@ -40,10 +33,10 @@ export class EventsService {
         registration.showNotification('⭐ Guardado en NeoEvents', {
           body: `No te pierdas: ${event?.title}`,
           icon: 'assets/icons/icon-192x192.png',
-          badge: 'assets/icons/icon-72x72.png', // Icono pequeño para la barra de estado
+          badge: 'assets/icons/icon-72x72.png',
           vibrate: [100, 50, 100],
           data: { url: window.location.href },
-        }as any);
+        } as any);
       }
     }
   }
@@ -53,25 +46,21 @@ export class EventsService {
     try {
       return saved ? JSON.parse(saved) : [];
     } catch (e) {
-      return []; // Por si el localStorage tiene datos corruptos
+      return [];
     }
   }
 
   public async requestNotificationPermission() {
-    if (!('Notification' in window)) {
-      console.log('Este navegador no soporta notificaciones de escritorio');
-      return;
-    }
-
+    if (!('Notification' in window)) return;
     if (Notification.permission !== 'granted') {
       await Notification.requestPermission();
     }
   }
 
-  // 4. Conexión con Ticketmaster
+  // ✅ Ahora llama al proxy en /api/events, sin exponer la apiKey
   public async fetchRealEvents(lat: number, lng: number) {
     const latlng = `${lat.toFixed(4)},${lng.toFixed(4)}`;
-    const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${this.apiKey}&latlong=${latlng}&radius=50&unit=km&sort=date,asc`;
+    const url = `${environment.apiUrl}?latlong=${latlng}&radius=50&unit=km&sort=date,asc`;
 
     console.log('🚀 Buscando eventos en:', latlng);
 
