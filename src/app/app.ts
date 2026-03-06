@@ -1,8 +1,7 @@
-import { Component, inject, signal, effect, computed } from '@angular/core'; // 1. Añadido computed
+import { Component, inject, signal, effect, computed } from '@angular/core';
 import { MapViewComponent } from './components/map-view/map-view';
 import { LocationService } from './service/location';
 import { EventsService } from './service/events';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +11,8 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App {
-  // 2. Definimos el filtro como una señal para que 'filteredEvents' sea reactivo
   currentFilter = signal<string>('all');
+  isLoading = signal<boolean>(false);
 
   public eventsService = inject(EventsService);
   public locationService = inject(LocationService);
@@ -70,7 +69,10 @@ export class App {
       const coords = this.locationService.userLocation();
       if (coords) {
         console.log('Ubicación detectada, cargando eventos...');
-        this.eventsService.fetchRealEvents(coords[0], coords[1]);
+        this.isLoading.set(true);
+        this.eventsService.fetchRealEvents(coords[0], coords[1]).finally(() => {
+          setTimeout(() => this.isLoading.set(false), 400);
+        });
       }
     });
 

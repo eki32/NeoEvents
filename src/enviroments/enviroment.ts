@@ -1,5 +1,5 @@
-
-  export const environment = {
+export const environment = {
   production: false,
-  apiUrl: '/api/events' 
+  apiKey: 'igNguciDrvwVgZqPoTine9DyDNnA4pHd',
+  apiUrl: 'https://app.ticketmaster.com/discovery/v2'
 };
